@@ -103,18 +103,41 @@ The device communicates with the broker at `192.168.100.17:1883` on the followin
    - Change `ssid` and `password` to your local network.
    - Update `mqtt_server` to your broker's IP address.
 5. **Upload the code** to your ESP32 board.
-6. **Deploy Node-RED Flow:**
-   - Import `Project_IoT_Gr19_flows.json` into your Node-RED environment.
+
+---
+
+## 📊 Dashboard Setup (Node-RED, ThingsBoard & Blynk)
+
+This project supports multiple platforms for monitoring and control:
+
+### Node-RED
+1. Ensure your MQTT Broker (e.g., Mosquitto) is running.
+2. Open your Node-RED workspace.
+3. Go to **Menu** > **Import**.
+4. Upload the `node-red-flow.json` file provided in this repository.
+5. Update the MQTT Broker nodes to match your IP address and deploy the flow.
+
+### ThingsBoard
+1. Create a Device in your ThingsBoard instance and copy its **Access Token**.
+2. Go to the **Dashboards** section and click **+ Add new dashboard** > **Import dashboard**.
+3. Upload the `thingsboard-dashboard.json` file.
+4. Update any device aliases in the dashboard to point to your newly created device.
+
+### Blynk
+*(For integration via Node-RED or directly)*
+1. Create a new template in the **Blynk Web Console**.
+2. Set up Datastreams matching your telemetry (e.g., Virtual Pins for Temperature, Distance, Score, Commands).
+3. Copy your `BLYNK_AUTH_TOKEN`.
+4. Update the Node-RED Blynk nodes or the ESP32 code (if using a direct Blynk connection) with your Token.
 
 ---
 
 ## 📁 Repository Structure
 
 - `Project_Source_Code_Gr19/` - Main Arduino/ESP32 Source Code.
-- `Project_IoT_Gr19_flows.json` - Node-RED flow configuration.
-- `Project_IoT_TB_TBsmartdesk.json` - ThingsBoard dashboard configuration.
+- `node-red-flow.json` - Node-RED flow configuration.
+- `thingsboard-dashboard.json` - ThingsBoard dashboard configuration.
 - `Project_IoT_Sketch_Gr19.fzz` - Fritzing circuit schematic.
-- `IoT_Project_Gr19.pdf` - Project documentation and slides.
 
 ---
 
