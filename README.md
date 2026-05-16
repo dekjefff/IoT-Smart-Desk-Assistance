@@ -14,22 +14,50 @@ The Smart Desk Assistant monitors your environment and behavior in real-time. It
 
 ### ✨ Key Features
 
-1. **👁️ Eye Health Monitoring (Posture & Distance)**
+1. **🌐 Unified Edge Gateway & Multi-Cloud**
+   - Uses **Node-RED** as a Unified Edge Gateway to manage flows and prevent race conditions between platforms.
+   - Synchronizes perfectly with **Blynk** (Mobile) and **ThingsBoard** (Web/Time Series Database for trend analysis).
+2. **👁️ Eye Health Monitoring (Posture & Distance)**
    - Uses an Ultrasonic Sensor to measure your distance from the screen.
    - Alerts you via RGB LED and Buzzer if you are too close (default: < 40 cm) for an extended period.
-2. **⏳ Focus & Pomodoro Timer**
+3. **⏳ Edge ML & Pomodoro State Machine**
    - Built-in countdown timer displayed on a 4-Digit TM1637 Display.
    - Automatically switches between **Work Mode** (e.g., 30 mins) and **Break Mode** (5 mins).
-   - Dynamically adjustable timer based on Machine Learning or User Input via MQTT.
-3. **💡 Smart Adaptive Lighting**
-   - Monitors ambient light using an LDR (Photoresistor).
-   - Automatically turns on the desk lamp when the room is too dark.
+   - **Dynamic ML Timer:** Evaluates behavior (score and average lux) at the end of a session to automatically adjust the next work timer using Edge Logic.
+4. **💡 Smart Adaptive Lighting**
+   - Monitors ambient light using an LDR (Photoresistor) and automatically turns on the desk lamp when dark.
    - Supports **Manual Override** to control the lamp remotely.
-4. **🌡️ Environment Monitoring**
+5. **🌡️ Environment Monitoring**
    - Tracks Temperature and Humidity using a DHT22 sensor to ensure optimal room conditions.
-5. **☁️ Multi-Cloud & Two-Way Control**
-   - Seamlessly integrates with Node-RED and ThingsBoard via MQTT.
-   - Receives real-time commands: `MUTE`, `LAMP`, `RESET_SCORE`, `RESET_TIMER`, `SET_DIST`, `SET_TIMER`.
+6. **🔔 Smart Notifications & Local Control**
+   - **Local:** RGB LED (Red = danger, Blue = break mode), Buzzer warnings, and a Node-RED Local Dashboard that works without internet.
+   - **Remote:** Alerts via **Telegram Bot** if the sitting behavior becomes critical (score < 50).
+
+---
+
+## 📊 Behavior Scoring Logic
+
+The system starts with a base score of 100. It continuously monitors your habits and applies penalties for risky behaviors:
+- **Bad Posture (Screen Proximity):** If the Ultrasonic sensor detects a distance less than the configured threshold (e.g., < 40 cm) for more than 5 consecutive seconds, it deducts `-5 points` and triggers a short buzzer warning.
+- **Low Light Environment:** If the LDR detects ambient lighting below the standard healthy threshold while working, it deducts `-2 points/minute`.
+- **Overworking / Skipping Breaks:** Bypassing or ignoring the Pomodoro break mode accumulates penalty points over time.
+
+---
+
+## 🛡️ System Reliability & Fault Tolerance
+
+- **Auto-Reconnect & Watchdog:** The ESP32 is programmed with a non-blocking reconnect logic for both Wi-Fi and MQTT. If a connection drops, it will seamlessly attempt to restore it without freezing the main loop.
+- **Offline Mode Operation:** In the event of an external internet outage (Cloud unreachable), the system continues to operate flawlessly via the Local Network (Node-RED). The standalone ESP32 will still track time, deduct points, and alert the user locally.
+- **MQTT QoS 1:** Critical alerts (like `critical_penalty`) are published with QoS 1 to guarantee delivery to the Node-RED Edge Gateway.
+
+---
+
+## 🚀 Use Case Scenario
+
+1. **Starting the Day:** You sit at your desk. The ESP32 initiates the Pomodoro timer (e.g., 45 mins). The TM1637 display starts the countdown.
+2. **During Work:** You unconsciously lean too close to the screen (distance < 30 cm). The RGB LED shifts from Green to Yellow, then Red, followed by a short buzzer beep. Your health score drops to 85.
+3. **Session Complete:** The timer hits zero. The RGB LED turns Blue, indicating the 5-minute Break Mode. Work data is published to Node-RED.
+4. **Edge Intelligence (Dynamic Timer):** Node-RED analyzes the completed session (low average score, poor lighting) and automatically adjusts your next work session to 30 minutes with a 10-minute break to encourage better rest and recovery.
 
 ---
 
