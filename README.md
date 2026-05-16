@@ -124,11 +124,32 @@ This project supports multiple platforms for monitoring and control:
 4. Update any device aliases in the dashboard to point to your newly created device.
 
 ### Blynk
-*(For integration via Node-RED or directly)*
-1. Create a new template in the **Blynk Web Console**.
-2. Set up Datastreams matching your telemetry (e.g., Virtual Pins for Temperature, Distance, Score, Commands).
-3. Copy your `BLYNK_AUTH_TOKEN`.
-4. Update the Node-RED Blynk nodes or the ESP32 code (if using a direct Blynk connection) with your Token.
+*(Integration handled via Node-RED MQTT to Blynk translation)*
+
+#### 1. Datastream Configuration (Virtual Pins)
+Set up the following Datastreams in your **Blynk Web Console** (Templates -> Datastreams) to match the Node-RED configuration:
+
+| Virtual Pin | Name | Data Type | Role (From Cloud Perspective) |
+| :--- | :--- | :--- | :--- |
+| **V0** | Reset Score | Integer | Command (Input) |
+| **V1** | Reset Timer | Integer | Command (Input) |
+| **V2** | Mute | Integer (0/1) | Command (Input) |
+| **V4** | Timer Duration | Integer | Command (Input) |
+| **V5** | Control Lamp | Integer (0/1) | Command (Input) |
+| **V6** | Distance Setup | Integer | Command (Input) |
+| **V10** | Eye Health Score | Integer | Telemetry (Output) |
+| **V11** | Time Remaining | Integer | Telemetry (Output) |
+
+#### 2. How to Create a Dashboard Widget (Example: Eye Health Score)
+Once your Datastreams are configured, you can build your dashboard:
+1. Go to your **Blynk Web Console** and open your Template's **Web Dashboard** tab.
+2. Drag and drop a **Gauge** widget from the widget box onto the canvas.
+3. Hover over the newly placed widget and click the **Gear Icon (Settings)**.
+4. Set the **Title** to `Eye Health Score`.
+5. Under **Datastream**, select `Eye Health Score (V10)`.
+6. Set the Min/Max values (e.g., `0` to `100`).
+7. Click **Save** in the widget settings, then click **Save And Apply** at the top right of the template editor.
+8. Update the Node-RED Blynk nodes with your new `BLYNK_AUTH_TOKEN` to see the live score!
 
 ---
 
