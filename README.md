@@ -66,7 +66,7 @@ The Smart Desk Assistant monitors your environment and behavior in real-time. It
 
 ## 📡 MQTT Communication Protocol
 
-The device communicates with the broker at `192.168.100.17:1883` on the following topics:
+The device communicates with the broker at `<YOUR_BROKER_IP>:1883` on the following topics:
 
 ### 📥 Subscribed Topics (Commands to ESP32)
 - Topic: `smartdesk/control`
