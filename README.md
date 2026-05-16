@@ -35,6 +35,26 @@ The Smart Desk Assistant monitors your environment and behavior in real-time. It
 
 ---
 
+## 🗄️ Time Series Database (ThingsBoard)
+
+This project utilizes a Time Series Database (InfluxDB via ThingsBoard) to capture continuous telemetry data from the ESP32. Every 5 seconds, data points such as sitting distance, ambient light levels, temperature, and current behavior scores are recorded. This allows users to view historical trends and analyze their long-term sitting habits through dynamic web graphs.
+
+---
+
+## 🧠 Edge ML/AI Logic
+
+Instead of relying solely on Cloud ML, this system implements **Edge Intelligence** directly on the Node-RED gateway. At the end of every work session, Node-RED evaluates the user's behavior based on the `session_end` event (analyzing the final score and average lux). Based on this localized assessment, it automatically calculates and assigns a new dynamic timer (e.g., shorter work periods for lower scores) for the next Pomodoro cycle.
+
+---
+
+## 📱 Smart Notifications
+
+The system employs a multi-tier notification strategy:
+- **Local Notification (On-site):** Immediate physical feedback at the desk via the Buzzer (short/long beeps depending on urgency) and RGB LED color changes based on risk levels (Red = danger, Blue = eye-rest mode).
+- **Remote Notification (Cloud):** Instant alerts sent remotely via **Telegram Bot API**. If a user's sitting posture becomes critically bad (score falls below 50), a warning message is immediately pushed to their smartphone.
+
+---
+
 ## 📊 Behavior Scoring Logic
 
 The system starts with a base score of 100. It continuously monitors your habits and applies penalties for risky behaviors:
