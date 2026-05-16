@@ -93,8 +93,8 @@ The device communicates with the broker at `192.168.100.17:1883` on the followin
    git clone https://github.com/dekjefff/IoT-Smart-Desk-Assistance.git
    ```
 2. **Open the project in Arduino IDE:**
-   - Navigate to `Project_Source_Code_Gr19/Project_Source_Code/`
-   - Open `Project_Source_Code.ino`.
+   - Navigate to `src/smart-desk-assistant/`
+   - Open `smart-desk-assistant.ino`.
 3. **Install Required Libraries:**
    - `DHT sensor library` by Adafruit
    - `TM1637` by Avishay Orpaz
@@ -155,10 +155,11 @@ Once your Datastreams are configured, you can build your dashboard:
 
 ## 📁 Repository Structure
 
-- `Project_Source_Code_Gr19/` - Main Arduino/ESP32 Source Code.
+- `src/smart-desk-assistant/` - Main Arduino/ESP32 Source Code.
 - `node-red-flow.json` - Node-RED flow configuration.
 - `thingsboard-dashboard.json` - ThingsBoard dashboard configuration.
-- `Project_IoT_Sketch_Gr19.fzz` - Fritzing circuit schematic.
+- `fritzing-sketch.fzz` - Fritzing circuit schematic.
+- `fritzing-sketch.png` - Circuit wiring diagram.
 
 ---
 
